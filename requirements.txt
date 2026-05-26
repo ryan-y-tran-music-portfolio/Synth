@@ -1,0 +1,3 @@
+sounddevice
+mido
+python-rtmidi
