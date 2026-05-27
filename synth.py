@@ -11,3 +11,16 @@ INCREASE_DURING_ATTACK = 1.0 / ATTACK_SAMPLES
 
 RELEASE_SAMPLES = RAMP_DOWN * SAMPLE_RATE
 DECREASE_DURING_RELEASE = 1.0 / ATTACK_SAMPLES
+
+def midi_note_to_frequency(midi_value: int) -> float:
+    """Take Midi Note and convert it to a frequency
+    
+    Args:
+        midi_note (int): Midi Note
+
+    Returns:
+        Frequency in Hz
+    """
+
+if __name__ == "__main__":
+    print("Hello")
