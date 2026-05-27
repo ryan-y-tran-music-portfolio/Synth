@@ -13,6 +13,10 @@ INCREASE_DURING_ATTACK = 1.0 / ATTACK_SAMPLES
 RELEASE_SAMPLES = RAMP_DOWN * SAMPLE_RATE
 DECREASE_DURING_RELEASE = 1.0 / ATTACK_SAMPLES
 
+class Synthesizer:
+    def __init__(self):
+        self.temp = "hi"
+
 def get_midi_port() -> str:
     """Get MIDI Port, whether it's virtual or physical.
     
