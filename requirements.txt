@@ -1,3 +1,4 @@
 sounddevice
 mido
 python-rtmidi
+questionary

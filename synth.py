@@ -1,5 +1,6 @@
 import sounddevice as sd
 import mido
+import questionary
 
 AMPLITUDE = 0.708 # Full Scale
 RAMP_UP = 0.010 # Milliseconds
@@ -27,11 +28,7 @@ def get_midi_port() -> str:
     if not midi_ports:
         raise Exception("There were no ports found, therefore the program cannot run.")
     
-    for port in midi_ports:
-        if "Default App Loopback (B)" in port:
-            return port
-    
-    raise Exception("Please make sure Windows MIDI Services is installed. Looking for Default App Loopback (B).")
+    return questionary.select("Choose MIDI Input.", choices=midi_ports).ask()
 
 def midi_note_to_frequency(base_frequency: float, midi_note: int) -> float:
     """Take Midi Note and convert it to a frequency
