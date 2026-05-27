@@ -18,6 +18,20 @@ def get_midi_port() -> str:
     Returns:
         Name of MIDI Port
     """
+    # Download VMPK
+    # Download Windows MIDI Services (https://microsoft.github.io/MIDI/get-latest/)
+    # VMPK -> Edit -> MIDI Connections
+    # MIDI OUT Driver -> Windows MM
+    # Output MIDI Connection -> Default App Loopback A
+    midi_ports = mido.get_input_names()
+    if not midi_ports:
+        raise Exception("There were no ports found, therefore the program cannot run.")
+    
+    for port in midi_ports:
+        if "Default App Loopback (B)" in port:
+            return port
+    
+    raise Exception("Please make sure Windows MIDI Services is installed. Looking for Default App Loopback (B).")
 
 def midi_note_to_frequency(base_frequency: float, midi_note: int) -> float:
     """Take Midi Note and convert it to a frequency
@@ -32,5 +46,5 @@ def midi_note_to_frequency(base_frequency: float, midi_note: int) -> float:
     return base_frequency * (2 ** ((midi_note - 69) / 12))
 
 if __name__ == "__main__":
-    result = midi_note_to_frequency(440.0, 69)
-    print(result)
+    result = get_midi_port()
+    print(f"Using {result}")
