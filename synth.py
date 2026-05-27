@@ -12,6 +12,13 @@ INCREASE_DURING_ATTACK = 1.0 / ATTACK_SAMPLES
 RELEASE_SAMPLES = RAMP_DOWN * SAMPLE_RATE
 DECREASE_DURING_RELEASE = 1.0 / ATTACK_SAMPLES
 
+def get_midi_port() -> str:
+    """Get MIDI Port, whether it's virtual or physical.
+    
+    Returns:
+        Name of MIDI Port
+    """
+
 def midi_note_to_frequency(base_frequency: float, midi_note: int) -> float:
     """Take Midi Note and convert it to a frequency
     
@@ -25,5 +32,5 @@ def midi_note_to_frequency(base_frequency: float, midi_note: int) -> float:
     return base_frequency * (2 ** ((midi_note - 69) / 12))
 
 if __name__ == "__main__":
-    result = midi_note_to_frequency(440.0, 119)
+    result = midi_note_to_frequency(440.0, 69)
     print(result)
