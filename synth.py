@@ -23,6 +23,13 @@ class Synthesizer:
         self.state = 'IDLE' # IDLE (No Press), ATTACK, RELEASE, SUSTAIN
         self.midi_note = None # Current MIDI note
 
+def start_synthesizer(midi_port: str) -> None:
+    """Start the Synthesizer, with given midi port.
+
+    Args:
+        midi_port (str): Name of Midi Port.
+    """
+
 def get_midi_port() -> str:
     """Get MIDI Port, whether it's virtual or physical.
     
