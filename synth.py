@@ -25,6 +25,16 @@ class Synthesizer:
         self.state = 'IDLE' # IDLE (No Press), ATTACK, RELEASE, SUSTAIN
         self.midi_note = None # Current MIDI note
 
+    def synthesizer_callback(outdata: numpy.ndarray, frames: int, time, status: sd.CallbackFlags) -> None:
+        """Callback for SoundDevice
+        
+        Args:
+            outdata (numpy.ndarray): Where Outgoing audio samples will be written to
+            frames (int): Frames to be processed
+            time (cffi.CData): Timestamp Info
+            status (sd.CallbackFlags): Stream Status Flags
+        """
+
 def start_synthesizer(midi_port: str) -> None:
     """Start the Synthesizer, with given midi port.
 
@@ -35,7 +45,7 @@ def start_synthesizer(midi_port: str) -> None:
     print(f"Initializing synthesizer with input port: {midi_port}")
     synthesizer = Synthesizer() # Initialize Synthesizer
 
-    output_stream = sd.OutputStream(samplerate=SAMPLE_RATE, blocksize=BLOCK_SIZE, channels=1) # Edit to add callback
+    output_stream = sd.OutputStream(samplerate=SAMPLE_RATE, blocksize=BLOCK_SIZE, channels=1, callback=synthesizer.synthesizer_callback())
 
     with output_stream:
         try:
