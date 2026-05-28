@@ -15,7 +15,13 @@ DECREASE_DURING_RELEASE = 1.0 / ATTACK_SAMPLES
 
 class Synthesizer:
     def __init__(self):
-        self.temp = "hi"
+        """Initializor for Synthesizer"""
+        self.phase = 0.0 # For Sawtooth
+        self.synthesizer_amplitude = 0.0
+        self.base_frequency = 440.0 # Edit to whatever
+        self.current_frequency = 440.0
+        self.state = 'IDLE' # IDLE (No Press), ATTACK, RELEASE, SUSTAIN
+        self.midi_note = None # Current MIDI note
 
 def get_midi_port() -> str:
     """Get MIDI Port, whether it's virtual or physical.
