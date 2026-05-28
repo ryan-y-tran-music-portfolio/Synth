@@ -1,11 +1,13 @@
 import sounddevice as sd
 import mido
+import numpy
 import questionary
 
 AMPLITUDE = 0.708 # Full Scale
 RAMP_UP = 0.010 # Milliseconds
 RAMP_DOWN = 0.010 # Milliseconds
 SAMPLE_RATE = 48000
+BLOCK_SIZE = 512
 
 ATTACK_SAMPLES = RAMP_UP * SAMPLE_RATE
 INCREASE_DURING_ATTACK = 1.0 / ATTACK_SAMPLES
@@ -29,6 +31,19 @@ def start_synthesizer(midi_port: str) -> None:
     Args:
         midi_port (str): Name of Midi Port.
     """
+
+    print(f"Initializing synthesizer with input port: {midi_port}")
+    synthesizer = Synthesizer() # Initialize Synthesizer
+
+    output_stream = sd.OutputStream(samplerate=SAMPLE_RATE, blocksize=BLOCK_SIZE, channels=1) # Edit to add callback
+
+    with output_stream:
+        try:
+            with mido.open_input(midi_port) as inport:
+                for msg in inport:
+                    print("Message!")
+        except KeyboardInterrupt:
+            print("Keyboard exception. Shutting down.")
 
 def get_midi_port() -> str:
     """Get MIDI Port, whether it's virtual or physical.
@@ -60,5 +75,5 @@ def midi_note_to_frequency(base_frequency: float, midi_note: int) -> float:
     return base_frequency * (2 ** ((midi_note - 69) / 12))
 
 if __name__ == "__main__":
-    result = get_midi_port()
-    print(f"Using {result}")
+    midi_port = get_midi_port()
+    start_synthesizer(midi_port)
