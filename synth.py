@@ -25,7 +25,7 @@ class Synthesizer:
         self.state = 'IDLE' # IDLE (No Press), ATTACK, RELEASE, SUSTAIN
         self.midi_note = None # Current MIDI note
 
-    def synthesizer_callback(outdata: numpy.ndarray, frames: int, time, status: sd.CallbackFlags) -> None:
+    def synthesizer_callback(self, outdata: numpy.ndarray, frames: int, time, status: sd.CallbackFlags) -> None:
         """Callback for SoundDevice
         
         Args:
@@ -45,13 +45,18 @@ def start_synthesizer(midi_port: str) -> None:
     print(f"Initializing synthesizer with input port: {midi_port}")
     synthesizer = Synthesizer() # Initialize Synthesizer
 
-    output_stream = sd.OutputStream(samplerate=SAMPLE_RATE, blocksize=BLOCK_SIZE, channels=1, callback=synthesizer.synthesizer_callback())
+    output_stream = sd.OutputStream(samplerate=SAMPLE_RATE, blocksize=BLOCK_SIZE, channels=1, callback=synthesizer.synthesizer_callback)
 
     with output_stream:
         try:
             with mido.open_input(midi_port) as inport:
                 for msg in inport:
-                    print("Message!")
+                    if msg.type == 'note_on' and msg.velocity > 0:
+                        synthesizer.midi_note = msg.note
+                        synthesizer.current_frequency = midi_note_to_frequency(synthesizer.base_frequency, synthesizer.midi_note)
+                        synthesizer.state = 'ATTACK'
+                    elif msg.type == 'note_off' or (msg.type == 'note_on' and msg.velocity == 0):
+                        synthesizer.state = 'RELEASE'
         except KeyboardInterrupt:
             print("Keyboard exception. Shutting down.")
 
