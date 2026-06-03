@@ -28,16 +28,20 @@ Follow the instructions to install the uv package manager [here](https://docs.as
 
 ### Installing VMPK
 
-a
+If you don't have an actual MIDI Controller like me, you can download Virtual MIDI Piano Keyboard [here](https://vmpk.sourceforge.io/).
 
 ### Installing Windows MIDI Services
 
-a
+Assuming you have Windows, download Windows MIDI Services [here](https://microsoft.github.io/MIDI/get-latest/).
 
 ### Connecting VMPK With Windows MIDI Services
 
-a
+Upon installation of both VMPK and Windows MIDI Services, open VMPK. Then click on **Edit**, then **MIDI Connections**.
+
+MIDI Setup should open. Configure MIDI OUT Driver to **Windows MM**, and Output MIDI Connection to **Default App Loopback (A)**.
 
 ### Running the Program
 
-a
+Simply run this program via `uv run synth.py`. You will be presented with all available MIDI Ports to connect the Synthesizer to. Because VMPK was connected to Loopback (A), select **Default App Loopback (B)**. You can now play with the synthesizer!
+
+To stop the synthesizer, press `Ctrl +  C`.
